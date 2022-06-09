@@ -70,10 +70,7 @@
             }
         }
 
-        const proxy1 = new Proxy(fakeObjects, handler1);
-        console.log(proxy1)
-
-        return proxy1;
+        return new Proxy(fakeObjects, handler1);
     }
 </script>
 
