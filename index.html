@@ -11,57 +11,69 @@
 
     const originalCreateElement = document.createElement
     document.createElement = function(a) {
-        res.innerHTML += "<li>createElement => " + a + " (" + this + "-" + arguments + ")</li>"
+        res.innerHTML += "<li>document.createElement (\"" + a + "\") </li>"
         let fakeResponse = originalCreateElement.apply(this, arguments)
-        fakeResponse.setAttribute = function(k, v) {
-            res.innerHTML += "<li>fakeResponse/createElement setAttribute => " + k + "=" + v + "</li>"
-        }
-        fakeResponse.appendChild = function(c) {
-            res.innerHTML += "<li>fakeResponse/createElement appendChild => " + c + "</li>"
-        }
-        fakeResponse.insertBefore = function(c, b) {
-            res.innerHTML += "<li>fakeResponse/createElement insertBefore => " + c + " before " + b + "</li>"
-        }
-        fakeResponse.innerHTML = function(v) {
-            res.innerHTML += "<li>fakeResponse/createElement innerHTML => " + v + "</li>"
-        }
         Object.defineProperty(fakeResponse, "src", {
-            get: function() {
-                res.innerHTML += "<li>fakeResponse/createElement get</li>"
-                return typeof bar !== "undefined" ? bar : proto.bar;
-            },
             set: function(value) {
-                res.innerHTML += "<li>fakeResponse/createElement set => " + value + "</li>"
+                res.innerHTML += "<li>FakeScriptObj.src = <br />\"" + value + "\"</li>"
                 bar = value;
             }
         });
-        fakeResponse.innerText = function(v) {
-            res.innerHTML += "<li>fakeResponse/createElement innerText => " + v + "</li>"
-        }
         return fakeResponse
     }
     const originalGetElementById = document.getElementById
     document.getElementById = function(a, b) {
-        res.innerHTML += "<li>getElementById  =>  " + a + "</li>"
+        res.innerHTML += "<li>document.getElementById(\"" + a + "\")</li>"
         return originalGetElementById.apply(this, arguments);
     }
 
-    const originalGetElement = document.getElementsByTagName
+    const originalGetElementByTagName = document.getElementsByTagName
     document.getElementsByTagName = function(a, b) {
-        res.innerHTML += "<li>getElementsByTagName => " + a + "</li>"
-        const fakeFrame = originalCreateElement.apply(this, arguments);
-        Object.defineProperty(fakeFrame, "src", {
-            get: function() {
-                res.innerHTML += "<li>fakeResponse/createElement get</li>"
-                return typeof bar !== "undefined" ? bar : proto.bar;
+        res.innerHTML += "<li>document.getElementsByTagName(\"" + a + "\") </li>"
+        const objects = originalGetElementByTagName.apply(this, arguments)
+
+        const handler3 = {
+            get(target, prop, receiver) {
+                const parameters = arguments;
+                res.innerHTML += "<li>&nbsp;&nbsp;TagObjectArr[x].parentNode." + prop + "(\"" + parameters + "\")</li>"
+                return target[prop]
             },
-            set: function(value) {
-                res.innerHTML += "<li>fakeResponse/createElement set => " + value + "</li>"
-                bar = value;
+            apply: function(target, thisArg, args) {
+                res.innerHTML += "<li>&nbsp;&nbsp;TagObjectArr[x].parentNode." + target.name + "(\"" + args + "\")</li>"
+            },
+            set: function(target, prop, value, receiver) {
+                res.innerHTML += "<li>&nbsp;&nbsp;TagObjectArr[x].parentNode." + prop + " = " + value + "</li>"
             }
-        });
-        let fakeResponse = [fakeFrame]
-        return fakeResponse;
+        }
+        const handler2 = {
+            get(target, prop, receiver) {
+                res.innerHTML += "<li>&nbsp;&nbsp;TagObjectArr[x]." + prop + "</li>"
+                if (prop == "parentNode") {
+                    return new Proxy(target[prop], handler3)
+                }
+                return target[prop]
+            }
+        }
+        let fakeObjects = []
+        for (let i = 0; i < objects.length; i++) {
+            fakeObjects.push(new Proxy(objects[i], handler2))
+        }
+
+        const handler1 = {
+            get(target, prop, receiver) {
+                if (Math.abs(parseInt(prop)) > 0 || prop == "0") {
+                    res.innerHTML += "<li>&nbsp;&nbsp;TagObjectArr[" + prop + "]</li>"
+                } else {
+                    res.innerHTML += "<li>&nbsp;&nbsp;TagObjectArr." + prop + "</li>"
+                }
+                return target[prop]
+            }
+        }
+
+        const proxy1 = new Proxy(fakeObjects, handler1);
+        console.log(proxy1)
+
+        return proxy1;
     }
 </script>
 
@@ -77,8 +89,8 @@
     
     ol {
         border: 1px solid #ccc;
-        padding-left: 40px;
-        padding-right: 40px;
+        padding-left: 35px;
+        padding-right: 35px;
         padding-top: 15px;
         padding-bottom: 10px;
     }
