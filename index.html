@@ -36,14 +36,8 @@
         const handler3 = {
             get(target, prop, receiver) {
                 const parameters = arguments;
-                resultsList.innerHTML += "<li>&nbsp;&nbsp;TagObjectArr[x].parentNode." + prop + "(\"" + parameters + "\")</li>"
+                resultsList.innerHTML += "<li>&nbsp;&nbsp;TagObjectArr[x].parentNode." + prop + "</li>"
                 return target[prop]
-            },
-            apply: function(target, thisArg, args) {
-                resultsList.innerHTML += "<li>&nbsp;&nbsp;TagObjectArr[x].parentNode." + target.name + "(\"" + args + "\")</li>"
-            },
-            set: function(target, prop, value, receiver) {
-                resultsList.innerHTML += "<li>&nbsp;&nbsp;TagObjectArr[x].parentNode." + prop + " = " + value + "</li>"
             }
         }
         const handler2 = {
