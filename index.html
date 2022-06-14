@@ -7,6 +7,12 @@
 <p id="author">via <a href="https://twitter.com/KrauseFx">@KrauseFx</a></p>
 <p>Verify the app's browser is not injecting any JavaScript code</p>
 
+<script type="text/javascript">
+    if (window.location.search.indexOf("fixed") > -1) {
+        document.write('<span id="iab-pcm-sdk"></span><span id="iab-autofill-sdk"></span>')
+    }
+</script>
+
 <hr />
 
 <div id="website-status-container">
@@ -117,7 +123,13 @@
     
     body {
         background-color: #f0f0f0;
-        margin: 40px;
+    }
+    /* On larger screens only */
+    
+    @media only screen and (min-width: 768px) {
+        body {
+            margin: 40px;
+        }
     }
     
     h1 {
@@ -126,8 +138,8 @@
     
     ol {
         border: 1px solid #ccc;
-        padding-left: 35px;
-        padding-right: 35px;
+        padding-left: 30px;
+        padding-right: 30px;
         padding-top: 15px;
         padding-bottom: 10px;
     }
