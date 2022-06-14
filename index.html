@@ -1,16 +1,36 @@
 <head>
     <meta name="viewport" content="user-scalable=no, width=device-width">
+    <meta charset="utf-8">
+    <title>hijacking.report</title>
 </head>
-<h1>Instagram Tracking Proof</h1>
-<h5>via <a href="https://twitter.com/KrauseFx">@KrauseFx</a></h5>
-<p>for more privacy projects visit <a href="https://krausefx.com/privacy">krausefx.com/privacy</a></p>
+<h1>hijacking.report</h1>
+<p id="author">via <a href="https://twitter.com/KrauseFx">@KrauseFx</a></p>
+<p>Verify the app's browser is not injecting any JavaScript code</p>
+
+<hr />
+
+<div id="website-status-container">
+    <span id="website-status">✅</span>
+    <span id="website-url">
+        <script type="text/javascript">
+            document.write(window.location.href)
+        </script>
+    </span>
+</div>
 
 <ol id="resultsList">
     <li>Page loaded</li>
 </ol>
 
+<footer>
+    <hr />
+    <p>For full details on what this website is doing visit the <a target="_blank" href="https://krausefx.com/blog/hijacking-report">hijacking.report announcement</a></p>
+    <p>For more privacy & security projects visit <a target="_blank" href="https://krausefx.com/privacy">krausefx.com/privacy</a></p>
+</footer>
+
 <script type="text/javascript">
     const resultsList = document.getElementById("resultsList")
+    const websiteStatus = document.getElementById("website-status")
 
     const originalCreateElement = document.createElement
     document.createElement = function(a) {
@@ -69,12 +89,21 @@
 
         return new Proxy(fakeObjects, handler1);
     }
+
+    setTimeout(function() {
+        resultsList.style.display = 'block';
+    }, 100);
 </script>
 
 <style type="text/css">
+    * {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        color: #353535;
+    }
+    
     body {
         background-color: #f0f0f0;
-        font-family: sans-serif;
+        margin: 40px;
     }
     
     h1 {
@@ -89,11 +118,51 @@
         padding-bottom: 10px;
     }
     
+    a {
+        color: #0085bd !important;
+    }
+    
+    #resultsList {
+        display: none;
+    }
+    
     ol>li {
         margin-bottom: 0.5em;
     }
     
-    h5 {
+    #author {
         margin-top: -10px;
+    }
+    
+    footer {
+        margin-top: 40px;
+    }
+    
+    footer a {
+        text-decoration: none;
+    }
+    
+    footer p {
+        margin-top: 0px;
+        margin-bottom: 5px;
+    }
+    
+    #website-status {
+        font-size: 50px;
+        font-weight: bold;
+        color: #00ff00;
+        padding: 10px;
+    }
+    
+    #website-url {
+        font-size: 30px;
+    }
+    
+    hr {
+        border: 0;
+        height: 1px;
+        background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(40, 40, 40, 0.3), rgba(0, 0, 0, 0));
+        margin-bottom: 35px;
+        background-color: transparent !important;
     }
 </style>
