@@ -13,24 +13,13 @@
     }
 </script>
 
-<hr />
-
-<div id="website-status-container">
-    <span id="website-status">✅</span>
-    <span id="website-url">
-        <script type="text/javascript">
-            document.write(window.location.href)
-        </script>
-    </span>
-</div>
-
 <ol id="resultsList">
     <h3>Detected JavaScript Events:</h3>
     <p id="none">None</p>
 </ol>
 
 <div id="summary">
-    Good news, it looks like the host app doesn't inject or run any JavaScript code.
+    ✅ &nbsp;Good news, it looks like the host app doesn't inject or run any JavaScript code.
 </div>
 
 <footer>
@@ -42,14 +31,12 @@
 <script type="text/javascript">
     const resultsList = document.getElementById("resultsList")
     const noneElement = document.getElementById("none")
-    const websiteStatus = document.getElementById("website-status")
     const summary = document.getElementById("summary")
 
     function appendEvent(str) {
         noneElement.style.display = "none"
-        websiteStatus.innerHTML = "🚨"
         resultsList.innerHTML += "<li>" + str + "</li>"
-        summary.innerHTML = "❌ JavaScript injection detected! See the list of events above!"
+        summary.innerHTML = "🚨 &nbsp;JavaScript injection detected! See the list of commands above!"
     }
 
     const originalCreateElement = document.createElement
@@ -109,10 +96,6 @@
 
         return new Proxy(fakeObjects, handler1);
     }
-
-    setTimeout(function() {
-        resultsList.style.display = 'block';
-    }, 100);
 </script>
 
 <style type="text/css">
@@ -149,10 +132,6 @@
         color: #0085bd !important;
     }
     
-    #resultsList {
-        display: none;
-    }
-    
     #resultsList h3 {
         margin-top: 10px;
         padding-top: 0px;
@@ -160,14 +139,11 @@
     
     ol>li {
         margin-bottom: 0.5em;
+        font-family: monospace;
     }
     
     #author {
         margin-top: -10px;
-    }
-    
-    footer {
-        margin-top: 40px;
     }
     
     footer a {
@@ -179,22 +155,12 @@
         margin-bottom: 5px;
     }
     
-    #website-status {
-        font-size: 50px;
-        font-weight: bold;
-        color: #00ff00;
-        padding: 10px;
-    }
-    
-    #website-url {
-        font-size: 30px;
-    }
-    
     hr {
         border: 0;
         height: 1px;
+        margin-top: 25px;
+        margin-bottom: 25px;
         background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(40, 40, 40, 0.3), rgba(0, 0, 0, 0));
-        margin-bottom: 35px;
         background-color: transparent !important;
     }
 </style>
