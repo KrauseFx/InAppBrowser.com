@@ -1,6 +1,4 @@
-<div style="float: right">
-    <img src="https://krausefx.com/assets/posts/hijacking.report/instagram_framed.png">
-</div>
+<img src="https://krausefx.com/assets/posts/hijacking.report/instagram_framed.png" width="300" align="right">
 
 # [hijacking.report](https://hijacking.report)
 
