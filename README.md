@@ -1,3 +1,7 @@
+<div style="float: right">
+    <img src="https://krausefx.com/assets/posts/hijacking.report/instagram_framed.png">
+</div>
+
 # [hijacking.report](https://hijacking.report)
 
 ## What is this project?
