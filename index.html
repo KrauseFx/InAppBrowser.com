@@ -41,7 +41,7 @@
 
     const originalCreateElement = document.createElement
     document.createElement = function(a) {
-        appendEvent("document.createElement (\"" + a + "\") ")
+        appendEvent("document.createElement(\"" + a + "\") ")
         let fakeresultsListponse = originalCreateElement.apply(this, arguments)
         Object.defineProperty(fakeresultsListponse, "src", {
             set: function(value) {
