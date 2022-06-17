@@ -56,6 +56,11 @@
         appendEvent("document.getElementById(\"" + a + "\")")
         return originalGetElementById.apply(this, arguments);
     }
+    const originalEventListener = document.originalEventListener
+    document.addEventListener = function(a, b) {
+        appendEvent("document.addEventListener(\"" + a + "\")")
+        return originalEventListener.apply(this, arguments);
+    }
 
     const originalGetElementByTagName = document.getElementsByTagName
     document.getElementsByTagName = function(a, b) {
