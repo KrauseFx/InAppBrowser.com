@@ -1,0 +1,192 @@
+<head>
+    <meta name="viewport" content="user-scalable=no, width=device-width">
+    <meta charset="utf-8">
+    <title>hijacking.report</title>
+</head>
+<h1>hijacking.report</h1>
+<p id="author">via <a href="https://twitter.com/KrauseFx">@KrauseFx</a></p>
+<p>Verify the app's browser is not injecting any JavaScript code</p>
+
+<script type="text/javascript">
+    if (window.location.search.indexOf("fixed") > -1) {
+        document.write('<span id="iab-pcm-sdk"></span><span id="iab-autofill-sdk"></span>')
+    }
+</script>
+
+
+
+<ol id="resultsList">
+    <h3>Detected JavaScript Events:</h3>
+    <p id="none">None</p>
+</ol>
+
+<div id="summary">
+    ✅ &nbsp;Good news, it looks like the host app doesn't inject or run any JavaScript code.
+</div>
+
+<footer>
+    <hr />
+    <p>For full details on what this website does visit the <a target="_blank" href="https://krausefx.com/blog/hijacking-report">hijacking.report announcement</a></p>
+    <p>For more privacy & security projects visit <a target="_blank" href="https://krausefx.com/privacy">krausefx.com/privacy</a></p>
+</footer>
+
+<script type="text/javascript">
+    const resultsList = document.getElementById("resultsList")
+    const noneElement = document.getElementById("none")
+    const summary = document.getElementById("summary")
+    const denyList = [
+        "globalThis",
+        "Object",
+        "log",
+        "parseInt",
+        "Array",
+        "Promise",
+        "Reflect",
+        "location",
+        "onmouseout",
+        "onmouseover",
+        "onpointerout",
+        "onmousemove",
+        "onmouseleave",
+        "onpointerrawupdate",
+        "onpointerover",
+        "onpointerenter",
+        "onpointermove",
+        "onmouseenter",
+        "onpointerleave",
+        "onscroll",
+        "onpointerdown",
+        "ongotpointercapture",
+        "onpointercancel",
+        "onlostpointercapture",
+    ]
+
+    function appendEvent(str) {
+        noneElement.style.display = "none"
+        resultsList.innerHTML += "<li>" + str + "</li>"
+        summary.innerHTML = "🚨 &nbsp;JavaScript injection detected! See the list of commands above!"
+    }
+
+    function overrideFunction(node, prop, level) {
+        if (typeof node[prop] !== "function") {
+            return;
+        }
+        try {
+            const original = node[prop]
+            node[prop] = function() {
+                let str = prop;
+                if (arguments) {
+                    str = `${node.constructor.name}.${prop}(${Object.values(arguments).join(", ")})`
+                }
+                appendEvent(str)
+                const fakeObj = original.apply(node, arguments)
+                if (fakeObj) {
+                    investigate(fakeObj, level + 1);
+                    const handler1 = {
+                        get(target, prop, receiver) {
+                            if (Math.abs(parseInt(prop)) > 0 || prop == "0") {
+                                appendEvent("&nbsp;&nbsp;PreviousObject[" + prop + "]")
+                            } else {
+                                appendEvent("&nbsp;&nbsp;PreviousObject." + prop + "")
+                            }
+                            return target[prop]
+                        }
+                    }
+
+                    return new Proxy(fakeObj, handler1);
+                }
+                return fakeObj;
+            }
+            console.log("Sucessfully overwrote " + prop + " on " + node)
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    function investigate(node, level) {
+        for (var prop in node) {
+            if (denyList.includes(prop)) {
+                continue;
+            }
+            value = node[prop]
+            if (level < 2) {
+                // investigate(value, level + 1);
+            }
+
+            overrideFunction(node, prop, level)
+        }
+    }
+    investigate(document, 0);
+
+    //     for(var prop in window){
+    //    console.log(prop);
+    //    console.debug(window[prop]);
+    // }
+</script>
+
+<style type="text/css">
+    * {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        color: #353535;
+    }
+    
+    body {
+        background-color: #f0f0f0;
+        max-width: 600px;
+    }
+    /* On larger screens only */
+    
+    @media only screen and (min-width: 600px) {
+        body {
+            margin: 40px;
+        }
+    }
+    
+    h1 {
+        font-size: 1.5em;
+    }
+    
+    ol {
+        border: 1px solid #ccc;
+        padding-left: 30px;
+        padding-right: 35px;
+        padding-top: 15px;
+        padding-bottom: 10px;
+    }
+    
+    a {
+        color: #0085bd !important;
+    }
+    
+    #resultsList h3 {
+        margin-top: 10px;
+        padding-top: 0px;
+    }
+    
+    ol>li {
+        margin-bottom: 0.5em;
+        font-family: monospace;
+    }
+    
+    #author {
+        margin-top: -10px;
+    }
+    
+    footer a {
+        text-decoration: none;
+    }
+    
+    footer p {
+        margin-top: 0px;
+        margin-bottom: 5px;
+    }
+    
+    hr {
+        border: 0;
+        height: 1px;
+        margin-top: 25px;
+        margin-bottom: 25px;
+        background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(40, 40, 40, 0.3), rgba(0, 0, 0, 0));
+        background-color: transparent !important;
+    }
+</style>
