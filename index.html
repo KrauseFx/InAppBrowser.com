@@ -60,8 +60,10 @@
         }
         if (window.location.search.indexOf("fixed") > -1) {
             b = null;
+            return null;
+        } else {
+            return originalEventListener.apply(this, arguments);
         }
-        return originalEventListener.apply(this, arguments);
     }
 
     const originalGetElementByTagName = document.getElementsByTagName
