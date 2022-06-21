@@ -1,8 +1,9 @@
 <head>
     <meta name="viewport" content="user-scalable=no, width=device-width">
     <meta charset="utf-8">
-    <title>Hijacking Webview</title>
+    <title>hijacking.report</title>
 </head>
+<h1>hijacking.report</h1>
 <p id="author">via <a href="https://twitter.com/KrauseFx">@KrauseFx</a></p>
 <p>Verify the app's browser is not injecting any JavaScript code</p>
 
@@ -18,28 +19,33 @@
 </ol>
 
 <div id="summary">
-    ✅ &nbsp;No JavaScript code detected
+    ✅ &nbsp;Good news, it looks like the host app doesn't inject or run any JavaScript code.
 </div>
+
+<footer>
+    <hr />
+    <p>For full details on what this website does visit the <a target="_blank" href="https://krausefx.com/blog/hijacking-report">hijacking.report announcement</a></p>
+    <p>For more privacy & security projects visit <a target="_blank" href="https://krausefx.com/privacy">krausefx.com/privacy</a></p>
+</footer>
 
 <script type="text/javascript">
     const resultsList = document.getElementById("resultsList")
     const noneElement = document.getElementById("none")
     const summary = document.getElementById("summary")
 
-    function appendEvent(level, str) {
+    function appendEvent(str) {
         noneElement.style.display = "none"
-        style = "padding-left: " + (level * 20).toString() + "px;"
-        resultsList.innerHTML += "<li style='" + style + "'>" + str + "</li>"
-        summary.innerHTML = "🚨 &nbsp;JavaScript injection detected!"
+        resultsList.innerHTML += "<li>" + str + "</li>"
+        summary.innerHTML = "🚨 &nbsp;JavaScript injection detected! See the list of commands above!"
     }
 
     const originalCreateElement = document.createElement
     document.createElement = function(a) {
-        appendEvent(0, "document.createElement(\"" + a + "\") ")
+        appendEvent("document.createElement(\"" + a + "\") ")
         let fakeresultsListponse = originalCreateElement.apply(this, arguments)
         Object.defineProperty(fakeresultsListponse, "src", {
             set: function(value) {
-                appendEvent(1, "FakeScriptObj.src = <br />\"" + value + "\"")
+                appendEvent("FakeScriptObj.src = <br />\"" + value + "\"")
                 bar = value;
             }
         });
@@ -47,37 +53,36 @@
     }
     const originalGetElementById = document.getElementById
     document.getElementById = function(a, b) {
-        appendEvent(0, "document.getElementById(\"" + a + "\")")
+        appendEvent("document.getElementById(\"" + a + "\")")
         return originalGetElementById.apply(this, arguments);
     }
 
     const originalEventListener = document.addEventListener
     document.addEventListener = function(a, b) {
-        appendEvent(0, "document.addEventListener(\"" + a + "\")")
-        if (b.toString().indexOf("fb_getSelection") > -1) {
-            appendEvent(1, b.toString().replace("function () {", "").replace("}", "").trim())
-        }
+        appendEvent("document.addEventListener(\"" + a + "\")")
         if (window.location.search.indexOf("fixed") > -1) {
-            b = null;
+            if (b.toString().indexOf("fb_getSelection") > -1) {
+                b = null;
+            }
         }
         return originalEventListener.apply(this, arguments);
     }
 
     const originalGetElementByTagName = document.getElementsByTagName
     document.getElementsByTagName = function(a, b) {
-        appendEvent(0, "document.getElementsByTagName(\"" + a + "\") ")
+        appendEvent("document.getElementsByTagName(\"" + a + "\") ")
         const objects = originalGetElementByTagName.apply(this, arguments)
 
         const handler3 = {
             get(target, prop, receiver) {
                 const parameters = arguments;
-                appendEvent(1, "TagObjectArr[x].parentNode." + prop + "")
+                appendEvent("&nbsp;&nbsp;TagObjectArr[x].parentNode." + prop + "")
                 return target[prop]
             }
         }
         const handler2 = {
             get(target, prop, receiver) {
-                appendEvent(1, "TagObjectArr[x]." + prop + "")
+                appendEvent("&nbsp;&nbsp;TagObjectArr[x]." + prop + "")
                 if (prop == "parentNode") {
                     return new Proxy(target[prop], handler3)
                 }
@@ -92,9 +97,9 @@
         const handler1 = {
             get(target, prop, receiver) {
                 if (Math.abs(parseInt(prop)) > 0 || prop == "0") {
-                    appendEvent(1, "TagObjectArr[" + prop + "]")
+                    appendEvent("&nbsp;&nbsp;TagObjectArr[" + prop + "]")
                 } else {
-                    appendEvent(1, "TagObjectArr." + prop + "")
+                    appendEvent("&nbsp;&nbsp;TagObjectArr." + prop + "")
                 }
                 return target[prop]
             }
@@ -126,17 +131,16 @@
         font-size: 1.5em;
     }
     
-    a {
-        color: #0085bd !important;
-    }
-    
-    #resultsList {
-        overflow-wrap: anywhere;
+    ol {
         border: 1px solid #ccc;
         padding-left: 30px;
-        padding-right: 0px;
+        padding-right: 35px;
         padding-top: 15px;
         padding-bottom: 10px;
+    }
+    
+    a {
+        color: #0085bd !important;
     }
     
     #resultsList h3 {
@@ -147,12 +151,10 @@
     ol>li {
         margin-bottom: 0.5em;
         font-family: monospace;
-        font-size: 90%;
     }
     
     #author {
-        /* margin-top: -10px; */
-        margin-top: 15px;
+        margin-top: -10px;
     }
     
     footer a {
