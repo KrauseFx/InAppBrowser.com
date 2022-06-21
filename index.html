@@ -53,9 +53,10 @@
 
     const originalEventListener = document.addEventListener
     document.addEventListener = function(a, b) {
-        appendEvent(0, "document.addEventListener(\"" + a + "\")")
+        appendEvent(0, "document.addEventListener(\"" + a + "\", ")
         if (b.toString().indexOf("fb_getSelection") > -1) {
-            appendEvent(1, b.toString().replace("function () {", "").replace("}", "").trim())
+            appendEvent(1, b.toString().replace("}", "").trim())
+            appendEvent(0, "}")
         }
         if (window.location.search.indexOf("fixed") > -1) {
             b = null;
@@ -134,7 +135,7 @@
         overflow-wrap: anywhere;
         border: 1px solid #ccc;
         padding-left: 30px;
-        padding-right: 0px;
+        padding-right: 10px;
         padding-top: 15px;
         padding-bottom: 10px;
     }
