@@ -63,6 +63,7 @@
         "ongotpointercapture",
         "onpointercancel",
         "onlostpointercapture",
+        "defaultView"
     ]
 
     const potentiallyDangerous = {
@@ -169,15 +170,10 @@
                 continue;
             }
             value = node[prop]
-            if (level < 2) {
-                // investigate(value, level + 1);
-            }
-
             overrideFunction(node, prop, level)
         }
     }
     investigate(document, 1);
-    // investigate(window, 0); // TODO: try this
 </script>
 
 <style type="text/css">
