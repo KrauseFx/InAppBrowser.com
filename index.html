@@ -62,7 +62,9 @@
         "selectionchange": "Used to monitor text selections",
     }
 
-    function appendEvent(str) {
+    let lastLevel = -1;
+
+    function appendEvent(str, level) {
         noneElement.style.display = "none"
         let classesToUse = ""
         let comments = ""
@@ -74,6 +76,11 @@
                 comments += `<p class='comment'>^&nbsp;&nbsp;${value}</p>`
             }
         }
+
+        if (level < lastLevel) {
+            classesToUse += "reducedLevel"
+        }
+        lastLevel = level;
 
         resultsList.innerHTML += "<li class='" + classesToUse + "'>" + str + comments + "</li>"
         summary.innerHTML = "🚨 &nbsp;JavaScript injection detected! See the list of commands above!"
@@ -104,7 +111,7 @@
                 // `str` would be something like
                 // "HTMLDocument.querySelector('head > meta['property="og:site_name"]')"
 
-                appendEvent(str)
+                appendEvent(str, level)
                 const fakeObj = original.apply(node, arguments)
                 if (fakeObj) {
                     investigate(fakeObj, level + 1);
@@ -113,18 +120,18 @@
                             // For some reason, prop is always a string it seems
                             const spaces = "&nbsp;".repeat(level * 4)
                             if (Math.abs(parseInt(prop)) > 0 || prop == "0") {
-                                appendEvent(spaces + fakeObj + "[" + renderParam(prop) + "]")
+                                appendEvent(spaces + fakeObj + "[" + renderParam(prop) + "]", level + 1)
                             } else {
-                                appendEvent(spaces + fakeObj + "." + prop + "")
+                                appendEvent(spaces + fakeObj + "." + prop + "", level + 1)
                             }
                             return target[prop]
                         },
                         set(target, prop, value, receiver) {
                             const spaces = "&nbsp;".repeat(level * 4)
                             if (Math.abs(parseInt(prop)) > 0 || prop == "0") {
-                                appendEvent(spaces + fakeObj + "[" + renderParam(prop) + "] = '" + value + "'")
+                                appendEvent(spaces + fakeObj + "[" + renderParam(prop) + "] = '" + value + "'", level + 1)
                             } else {
-                                appendEvent(spaces + fakeObj + "." + prop + " = " + renderParam(value))
+                                appendEvent(spaces + fakeObj + "." + prop + " = " + renderParam(value), level + 1)
                             }
                             return target[prop] = value
                         }
@@ -167,15 +174,15 @@
         font-size: 0.8em;
         color: rgb(175, 0, 0);
         text-align: right;
-        border-top: 1px solid #ddd;
-        margin-bottom: 20px;
-        border-bottom: 1px solid #ccc;
+        margin-bottom: 5px;
         width: 100%;
         margin-top: 0px;
-        border-right: 1px solid #ccc;
-        /* Console font */
         font-family: 'Courier New', Courier, monospace;
         padding: 5px;
+    }
+    
+    .reducedLevel {
+        margin-top: 30px;
     }
     
     body {
