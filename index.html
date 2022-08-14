@@ -71,8 +71,9 @@
             node[prop] = function() {
                 let str = prop;
                 if (arguments) {
-                    str = `${node.constructor.name}.${prop}(${Object.values(arguments).join(", ")})`
+                    str = `${node.constructor.name}.${prop}('${Object.values(arguments).join('", ')}')`
                 }
+                // debugger
                 appendEvent(str)
                 const fakeObj = original.apply(node, arguments)
                 if (fakeObj) {
@@ -80,7 +81,7 @@
                     const handler1 = {
                         get(target, prop, receiver) {
                             if (Math.abs(parseInt(prop)) > 0 || prop == "0") {
-                                appendEvent("&nbsp;&nbsp;PreviousObject[" + prop + "]")
+                                appendEvent("&nbsp;&nbsp;PreviousObject[\"" + prop + "\"]")
                             } else {
                                 appendEvent("&nbsp;&nbsp;PreviousObject." + prop + "")
                             }
@@ -103,7 +104,7 @@
             if (denyList.includes(prop)) {
                 continue;
             }
-            value = node[prop]
+            // value = node[prop]
             if (level < 2) {
                 // investigate(value, level + 1);
             }
@@ -112,6 +113,7 @@
         }
     }
     investigate(document, 0);
+    // investigate(window, 0); // TODO: try this
 </script>
 
 <style type="text/css">
@@ -152,6 +154,14 @@
     #resultsList h3 {
         margin-top: 10px;
         padding-top: 0px;
+    }
+    
+    #resultsList {
+        /* Scroll inline */
+        margin-left: -5px;
+        margin-right: -5px;
+        overflow-y: auto;
+        max-width: cacl(100% - 10px);
     }
     
     ol>li {
