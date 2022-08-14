@@ -14,8 +14,14 @@
     <p id="none">None</p>
 </ol>
 
-<div id="summary">
+<div class="summaries" id="clean-summary">
     ✅ &nbsp;Good news, it looks like the host app doesn't inject any JavaScript code.
+</div>
+<div class="summaries" id="medium-summary">
+    🕵️‍♂️ &nbsp;JavaScript injection detected! See the list of commands above! This does not mean anything malicious is happening.
+</div>
+<div class="summaries" id="dangerous-summary">
+    🚨 &nbsp;JavaScript injection detected! Including some potentially malicious or dangerous commands. See the highlights above!
 </div>
 
 <footer>
@@ -28,6 +34,9 @@
 <script type="text/javascript">
     const resultsList = document.getElementById("resultsList")
     const noneElement = document.getElementById("none")
+    const cleanSummary = document.getElementById("clean-summary")
+    const mediumSummary = document.getElementById("medium-summary")
+    const dangerousSummary = document.getElementById("dangerous-summary")
     const summary = document.getElementById("summary")
     const denyList = [
         "globalThis",
@@ -74,6 +83,10 @@
             if (str.indexOf(key) > -1) {
                 classesToUse += "danger"
                 comments += `<p class='comment'>^&nbsp;&nbsp;${value}</p>`
+
+                cleanSummary.style.display = "none"
+                mediumSummary.style.display = "none"
+                dangerousSummary.style.display = "block"
             }
         }
 
@@ -83,7 +96,10 @@
         lastLevel = level;
 
         resultsList.innerHTML += "<li class='" + classesToUse + "'>" + str + comments + "</li>"
-        summary.innerHTML = "🚨 &nbsp;JavaScript injection detected! See the list of commands above!"
+        if (cleanSummary.style.display !== "none") {
+            cleanSummary.style.display = "none"
+            mediumSummary.style.display = "block"
+        }
     }
 
     // Function to help surround the value by ' if it's a string
@@ -257,5 +273,25 @@
         margin-bottom: 25px;
         background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(40, 40, 40, 0.3), rgba(0, 0, 0, 0));
         background-color: transparent !important;
+    }
+    
+    .summaries {
+        padding: 20px;
+        margin-left: -5px;
+        margin-right: -5px;
+    }
+    
+    #clean-summary {
+        background-color: rgba(0, 255, 0, 0.2)
+    }
+    
+    #medium-summary {
+        display: none;
+        background-color: rgba(255, 255, 0, 0.3);
+    }
+    
+    #dangerous-summary {
+        display: none;
+        background-color: rgba(255, 0, 0, 0.3);
     }
 </style>
