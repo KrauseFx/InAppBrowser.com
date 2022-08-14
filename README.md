@@ -4,7 +4,9 @@
 
 ## What is this project?
 
-Please read [this article](https://krausefx.com/blog/hijacking-report) first
+Please read [this article](https://krausefx.com/blog/ios-privacy-instagram-and-facebook-can-track-anything-you-do-on-any-website-in-their-in-app-browser) first
+
+<!-- TODO: insert new link here -->
 
 ## How does it work?
 
