@@ -73,19 +73,31 @@
                 if (arguments) {
                     str = `${node.constructor.name}.${prop}('${Object.values(arguments).join('", ')}')`
                 }
-                // debugger
+                // `str` would be something like
+                // "HTMLDocument.querySelector('head > meta[property="og:site_name"]')"
+
                 appendEvent(str)
                 const fakeObj = original.apply(node, arguments)
                 if (fakeObj) {
                     investigate(fakeObj, level + 1);
                     const handler1 = {
                         get(target, prop, receiver) {
+                            const spaces = "&nbsp;".repeat(level * 4)
                             if (Math.abs(parseInt(prop)) > 0 || prop == "0") {
-                                appendEvent("&nbsp;&nbsp;PreviousObject[\"" + prop + "\"]")
+                                appendEvent(spaces + fakeObj + "[\"" + prop + "\"]")
                             } else {
-                                appendEvent("&nbsp;&nbsp;PreviousObject." + prop + "")
+                                appendEvent(spaces + fakeObj + "." + prop + "")
                             }
                             return target[prop]
+                        },
+                        set(target, prop, value, receiver) {
+                            const spaces = "&nbsp;".repeat(level * 4)
+                            if (Math.abs(parseInt(prop)) > 0 || prop == "0") {
+                                appendEvent(spaces + fakeObj + "[\"" + prop + "\"] = '" + value + "'")
+                            } else {
+                                appendEvent(spaces + fakeObj + "." + prop + " = '" + value + "'")
+                            }
+                            return target[prop] = value
                         }
                     }
 
@@ -104,7 +116,7 @@
             if (denyList.includes(prop)) {
                 continue;
             }
-            // value = node[prop]
+            value = node[prop]
             if (level < 2) {
                 // investigate(value, level + 1);
             }
@@ -112,7 +124,7 @@
             overrideFunction(node, prop, level)
         }
     }
-    investigate(document, 0);
+    investigate(document, 1);
     // investigate(window, 0); // TODO: try this
 </script>
 
@@ -157,11 +169,11 @@
     }
     
     #resultsList {
-        /* Scroll inline */
         margin-left: -5px;
         margin-right: -5px;
         overflow-y: auto;
         max-width: cacl(100% - 10px);
+        white-space: nowrap;
     }
     
     ol>li {
