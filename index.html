@@ -29,7 +29,7 @@
     <p>
         <b>Important:</b> The above list of commands might not be the full list. This page works by overriding the most common JavaScript functions. The host app might still inject other commands. Also, this page can only monitor JS commands, and can't
         detect other tracking the app might do, like adding custom gesture recognisers on top of the webview, screenshot detections, or subscribing to web request events of the web view. The list of potentially dangerous JS commands is incomple, and was
-        built based on analysing some of the most popular iOS apps.
+        built based on analysing some of the most popular iOS apps. All the notes added might not be 100% accurate and are only there to help understand the typical context of a given command.
     </p>
     <br />
     <p>For full details on what this website does visit the <a target="_blank" href="https://krausefx.com/blog/ios-privacy-instagram-and-facebook-can-track-anything-you-do-on-any-website-in-their-in-app-browser">read
@@ -77,6 +77,12 @@
         "http://": "Uses an unencrypted URL, making the whole page insecure",
         "selectionchange": "Used to monitor text selections",
     }
+    const goodNotes = {
+        "querySelector('head > meta[property=\"og:site_name\"]')": "Get the website's name",
+        "querySelector('head > meta[name=\"title\"]')": "Get the website title",
+        "querySelectorAll('head > link[rel~=\"icon\"]')": "Get the website's favicon(s)",
+        "getElementsByTagName('meta')": "Get the page's metadata, this is unrelated to Meta the company",
+    }
 
     let lastLevel = -1;
 
@@ -94,6 +100,12 @@
                 cleanSummary.style.display = "none"
                 mediumSummary.style.display = "none"
                 dangerousSummary.style.display = "block"
+            }
+        }
+        // Iterate over goodNotes, and see if any of them are included in the `str`
+        for (const [key, value] of Object.entries(goodNotes)) {
+            if (str.indexOf(key) > -1) {
+                comments += `<p class='good-comment'>^&nbsp;&nbsp;${value}</p>`
             }
         }
 
@@ -194,6 +206,18 @@
         text-align: right;
         margin-bottom: 5px;
         width: 100%;
+        margin-top: 0px;
+        font-family: 'Courier New', Courier, monospace;
+        padding: 5px;
+    }
+    
+    .good-comment {
+        font-size: 0.8em;
+        color: rgb(0, 187, 0);
+        text-align: right;
+        margin-bottom: 5px;
+        width: 100%;
+        font-weight: bold;
         margin-top: 0px;
         font-family: 'Courier New', Courier, monospace;
         padding: 5px;
