@@ -62,6 +62,15 @@
         summary.innerHTML = "🚨 &nbsp;JavaScript injection detected! See the list of commands above!"
     }
 
+    // Function to help surround the value by ' if it's a string
+    function renderParam(param) {
+        if (typeof param === "string") {
+            return "'" + param.replace("'", "\\'") + "'"
+        } else {
+            return param
+        }
+    }
+
     function overrideFunction(node, prop, level) {
         if (typeof node[prop] !== "function") {
             return;
@@ -71,7 +80,9 @@
             node[prop] = function() {
                 let str = prop;
                 if (arguments) {
-                    str = `${node.constructor.name}.${prop}('${Object.values(arguments).join('", ')}')`
+                    str = `${node.constructor.name}.${prop}(`
+                    str += Object.values(arguments).map((arg) => renderParam(arg)).join(", ")
+                    str += ")"
                 }
                 // `str` would be something like
                 // "HTMLDocument.querySelector('head > meta[property="og:site_name"]')"
@@ -82,9 +93,10 @@
                     investigate(fakeObj, level + 1);
                     const handler1 = {
                         get(target, prop, receiver) {
+                            // For some reason, prop is always a string it seems
                             const spaces = "&nbsp;".repeat(level * 4)
                             if (Math.abs(parseInt(prop)) > 0 || prop == "0") {
-                                appendEvent(spaces + fakeObj + "[\"" + prop + "\"]")
+                                appendEvent(spaces + fakeObj + "[" + renderParam(prop) + "]")
                             } else {
                                 appendEvent(spaces + fakeObj + "." + prop + "")
                             }
@@ -93,9 +105,9 @@
                         set(target, prop, value, receiver) {
                             const spaces = "&nbsp;".repeat(level * 4)
                             if (Math.abs(parseInt(prop)) > 0 || prop == "0") {
-                                appendEvent(spaces + fakeObj + "[\"" + prop + "\"] = '" + value + "'")
+                                appendEvent(spaces + fakeObj + "[" + renderParam(prop) + "] = '" + value + "'")
                             } else {
-                                appendEvent(spaces + fakeObj + "." + prop + " = '" + value + "'")
+                                appendEvent(spaces + fakeObj + "." + prop + " = " + renderParam(value))
                             }
                             return target[prop] = value
                         }
