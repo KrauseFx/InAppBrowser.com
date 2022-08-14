@@ -10,7 +10,7 @@
     this first</a>.</p>
 
 <ol id="resultsList">
-    <h3>Detected JavaScript Events:</h3>
+    <h3>Detected JavaScript Commands:</h3>
     <p id="none">None</p>
 </ol>
 
@@ -56,9 +56,27 @@
         "onlostpointercapture",
     ]
 
+    const potentiallyDangerous = {
+        "createElement('script')": "Injects external JavaScript code",
+        "http://": "Uses an unencrypted URL, making the whole page insecure",
+        "selectionchange": "Used to monitor text selections",
+        "meta[name": "Querying all content can be dangerous"
+    }
+
     function appendEvent(str) {
         noneElement.style.display = "none"
-        resultsList.innerHTML += "<li>" + str + "</li>"
+        let classesToUse = ""
+        let comments = ""
+
+        // Iterate over potentiallyDangerous, and see if any of them are included in the `str`
+        for (const [key, value] of Object.entries(potentiallyDangerous)) {
+            if (str.indexOf(key) > -1) {
+                classesToUse += "danger"
+                comments += `<p class='comment'>^&nbsp;&nbsp;${value}</p>`
+            }
+        }
+
+        resultsList.innerHTML += "<li class='" + classesToUse + "'>" + str + comments + "</li>"
         summary.innerHTML = "🚨 &nbsp;JavaScript injection detected! See the list of commands above!"
     }
 
@@ -85,7 +103,7 @@
                     str += ")"
                 }
                 // `str` would be something like
-                // "HTMLDocument.querySelector('head > meta[property="og:site_name"]')"
+                // "HTMLDocument.querySelector('head > meta['property="og:site_name"]')"
 
                 appendEvent(str)
                 const fakeObj = original.apply(node, arguments)
@@ -146,6 +164,21 @@
         color: #353535;
     }
     
+    .comment {
+        font-size: 0.8em;
+        color: rgb(175, 0, 0);
+        text-align: right;
+        border-top: 1px solid #ddd;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #ccc;
+        width: 100%;
+        margin-top: 0px;
+        border-right: 1px solid #ccc;
+        /* Console font */
+        font-family: 'Courier New', Courier, monospace;
+        padding: 5px;
+    }
+    
     body {
         background-color: #f0f0f0;
         max-width: 600px;
@@ -204,6 +237,11 @@
     footer p {
         margin-top: 0px;
         margin-bottom: 5px;
+    }
+    
+    .danger {
+        color: rgba(255, 0, 0, 1);
+        font-weight: bold;
     }
     
     hr {
