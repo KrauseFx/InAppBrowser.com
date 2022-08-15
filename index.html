@@ -124,7 +124,7 @@
         // Iterate over potentiallyDangerous, and see if any of them are included in the `str`
         for (const [key, value] of Object.entries(potentiallyDangerous)) {
             if (str.indexOf(key) > -1) {
-                classesToUse += "danger"
+                classesToUse += " danger "
                 comments += `<p class='bad-comment'>^&nbsp;&nbsp;${value}</p>`
                 allComments.innerHTML += `<li class='bad-in-comments'>${value}</li>`
 
@@ -149,7 +149,7 @@
         }
 
         if (level < lastLevel) {
-            classesToUse += "reducedLevel"
+            classesToUse += " reducedLevel "
         }
         lastLevel = level;
 
