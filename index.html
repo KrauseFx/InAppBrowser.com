@@ -136,7 +136,6 @@
         // Iterate over neutralNotes, and see if any of them are included in the `str`
         for (const [key, value] of Object.entries(neutralNotes)) {
             if (str.indexOf(key) > -1) {
-                classesToUse += "neutral"
                 comments += `<p class='neutral-comment'>^&nbsp;&nbsp;${value}</p>`
                 allComments.innerHTML += `<li class='neutral-in-comments'>${value}</li>`
             }
