@@ -5,7 +5,6 @@
     <script defer data-domain="inappbrowser.com" src="https://plausible.io/js/plausible.js"></script>
 </head>
 <h1>inAppBrowser.com</h1>
-<p id="author">via <a target="_blank" href="https://twitter.com/KrauseFx">@KrauseFx</a></p>
 <p class="subtitle">Verify if an app's in-app browser is injecting JavaScript code</p>
 <p>For full context, please <a target="_blank" href="https://krausefx.com/blog/ios-privacy-instagram-and-facebook-can-track-anything-you-do-on-any-website-in-their-in-app-browser">read
     this first</a>.</p>
@@ -22,19 +21,19 @@
 <ul id="all-comments">
 </ul>
 
-<div id="summary-note">
+<div class="summary-note">
     The summary above is a list of commands detected, however is not a comprehensive list of what is happening. Below is the raw output that should be carefully studied to understand what is happening.
-
-    <br /><br />
-    <b>Disclaimer</b>: This tool works by overriding the most common JavaScript functions. The host app may still inject other commands, therefore the above list of commands is not a comprehensive list of what is happening. This tool cannot detect other
-    app tracking that may be happening, such as custom gesture recognition, screenshot detection, or tracking of web request events. It is important to fully diagnose the raw output to form an understanding of how the app is using this data.”
-
 </div>
 
 <ol id="resultsList">
     <h3>Detected JavaScript Commands:</h3>
     <p id="none">None</p>
 </ol>
+
+<div class="summary-note">
+    <b>Disclaimer</b>: This tool works by overriding the most common JavaScript functions. The host app may still inject other commands, therefore the above list of commands is not a comprehensive list of what is happening. This tool cannot detect other
+    app tracking that may be happening, such as custom gesture recognition, screenshot detection, or tracking of web request events. It is important to fully diagnose the raw output to form an understanding of how the app is using this data.
+</div>
 
 <footer>
     <hr />
@@ -382,9 +381,9 @@
         color: #666;
     }
     
-    #summary-note {
-        font-style: italic;
+    .summary-note {
         text-align: left;
+        color: #666;
         font-size: 0.9em;
     }
 </style>
