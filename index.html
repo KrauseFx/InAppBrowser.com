@@ -19,6 +19,11 @@
 <div class="summaries" id="dangerous-summary">
     🚨 &nbsp;JavaScript injection detected! Including some potentially malicious or dangerous commands. See the highlights above!
 </div>
+<ul id="all-comments">
+</ul>
+
+The above is a summary of the commands this page has detected. This page can't detect all commands, so there might be other tracking happening not shown here. Also, the above only shows the commands that we also interpret, for a full list of all commands,
+check out the list below, however it will require engineering skills to understand what is happening.
 
 <ol id="resultsList">
     <h3>Detected JavaScript Commands:</h3>
@@ -39,11 +44,13 @@
 </footer>
 
 <script type="text/javascript">
+    // Fetch the nodes first, before we override the `document` methods
     const resultsList = document.getElementById("resultsList")
     const noneElement = document.getElementById("none")
     const cleanSummary = document.getElementById("clean-summary")
     const mediumSummary = document.getElementById("medium-summary")
     const dangerousSummary = document.getElementById("dangerous-summary")
+    const allComments = document.getElementById("all-comments")
     const summary = document.getElementById("summary")
     const denyList = [
         "globalThis",
@@ -78,11 +85,14 @@
         "http://": "Uses an unencrypted URL, making the whole page insecure",
         "selectionchange": "Used to monitor text selections",
     }
+    const neutralNotes = {
+        "querySelector('input[type=password]": "Accessing all password fields: This could either mean the app has a password manager, or the app reads or enters passwords on the website"
+    }
     const goodNotes = {
-        "querySelector('head > meta[property=\"og:site_name\"]')": "Get the website's name",
-        "querySelector('head > meta[name=\"title\"]')": "Get the website title",
-        "querySelectorAll('head > link[rel~=\"icon\"]')": "Get the website's favicon(s)",
-        "getElementsByTagName('meta')": "Get the page's metadata, this is unrelated to Meta the company",
+        "querySelector('head > meta[property=\"og:site_name\"]')": "Gets the website's name",
+        "querySelector('head > meta[name=\"title\"]')": "Gets the website title",
+        "querySelectorAll('head > link[rel~=\"icon\"]')": "Gets the website's favicon(s)",
+        "getElementsByTagName('meta')": "Gets the page's metadata (like share text), this is unrelated to Meta the company",
     }
 
     let lastLevel = -1;
@@ -96,17 +106,27 @@
         for (const [key, value] of Object.entries(potentiallyDangerous)) {
             if (str.indexOf(key) > -1) {
                 classesToUse += "danger"
-                comments += `<p class='comment'>^&nbsp;&nbsp;${value}</p>`
+                comments += `<p class='bad-comment'>^&nbsp;&nbsp;${value}</p>`
+                allComments.innerHTML += `<li class='bad-in-comments'>${value}</li>`
 
                 cleanSummary.style.display = "none"
                 mediumSummary.style.display = "none"
                 dangerousSummary.style.display = "block"
             }
         }
+        // Iterate over neutralNotes, and see if any of them are included in the `str`
+        for (const [key, value] of Object.entries(neutralNotes)) {
+            if (str.indexOf(key) > -1) {
+                classesToUse += "neutral"
+                comments += `<p class='neutral-comment'>^&nbsp;&nbsp;${value}</p>`
+                allComments.innerHTML += `<li class='neutral-in-comments'>${value}</li>`
+            }
+        }
         // Iterate over goodNotes, and see if any of them are included in the `str`
         for (const [key, value] of Object.entries(goodNotes)) {
             if (str.indexOf(key) > -1) {
                 comments += `<p class='good-comment'>^&nbsp;&nbsp;${value}</p>`
+                allComments.innerHTML += `<li class='good-in-comments'>${value}</li>`
             }
         }
 
@@ -201,11 +221,23 @@
         color: #353535;
     }
     
-    .comment {
+    .bad-comment {
         font-size: 0.8em;
         color: rgb(175, 0, 0);
         text-align: right;
         margin-bottom: 5px;
+        width: 100%;
+        margin-top: 0px;
+        font-family: 'Courier New', Courier, monospace;
+        padding: 5px;
+    }
+    
+    .neutral-comment {
+        font-size: 0.8em;
+        color: rgb(0, 0, 175);
+        text-align: right;
+        margin-bottom: 5px;
+        font-weight: bold;
         width: 100%;
         margin-top: 0px;
         font-family: 'Courier New', Courier, monospace;
@@ -272,6 +304,7 @@
     
     ol>li {
         margin-bottom: 0.5em;
+        font-size: 0.8em;
         font-family: monospace;
     }
     
@@ -320,5 +353,19 @@
     #dangerous-summary {
         display: none;
         background-color: rgba(255, 0, 0, 0.3);
+    }
+    
+    #all-comments {
+        padding-left: 10px;
+        margin-top: -0px;
+        border: 3px solid #ccc;
+        border-top: none;
+        list-style: inside;
+        line-height: 1.8;
+    }
+    
+    #all-comments>.in-comments {
+        text-align: left !important;
+        padding-left: 0px;
     }
 </style>
