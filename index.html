@@ -6,8 +6,12 @@
 </head>
 <h1>InAppBrowser.com</h1>
 <p class="subtitle">Verify if an app's in-app browser is injecting JavaScript code</p>
-<p>For full context, please <a target="_blank" href="https://krausefx.com/blog/ios-privacy-instagram-and-facebook-can-track-anything-you-do-on-any-website-in-their-in-app-browser">read
-    this first</a>.</p>
+<p id="high-level-summary">
+    Some iOS and Android apps make use of a custom in-app browser (<a target="_blank" href="https://krausefx.com/blog/ios-privacy-instagram-and-facebook-can-track-anything-you-do-on-any-website-in-their-in-app-browser">full details</a>). This causes various
+    potential security and privacy risks to the user. This page is designed to help you see what the in-app browser is doing.
+</p>
+<p>For full context, please <a target="_blank" href="https://krausefx.com/">read
+    the intro first</a>.</p>
 
 <div class="summaries" id="clean-summary">
     ✅ &nbsp;Good news, it looks like the host app doesn't inject any JavaScript code.
@@ -386,5 +390,11 @@
         text-align: left;
         color: #666;
         font-size: 0.9em;
+    }
+    
+    #high-level-summary {
+        color: #555;
+        margin-left: 20px;
+        margin-right: 10px;
     }
 </style>
