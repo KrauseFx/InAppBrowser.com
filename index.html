@@ -4,7 +4,7 @@
     <title>inAppBrowser.com</title>
     <script defer data-domain="inappbrowser.com" src="https://plausible.io/js/plausible.js"></script>
 </head>
-<h1>inAppBrowser.com</h1>
+<h1>InAppBrowser.com</h1>
 <p class="subtitle">Verify if an app's in-app browser is injecting JavaScript code</p>
 <p>For full context, please <a target="_blank" href="https://krausefx.com/blog/ios-privacy-instagram-and-facebook-can-track-anything-you-do-on-any-website-in-their-in-app-browser">read
     this first</a>.</p>
@@ -20,13 +20,14 @@
 </div>
 <ul id="all-comments">
 </ul>
+<hr style="margin-top: 0px; margin-bottom: 15px" />
 
 <div class="summary-note">
     The summary above is a list of commands detected, however is not a comprehensive list of what is happening. Below is the raw output that should be carefully studied to understand what is happening.
 </div>
 
 <ol id="resultsList">
-    <h3>Detected JavaScript Commands:</h3>
+    <h5>Detected JavaScript Commands:</h5>
     <p id="none">None</p>
 </ol>
 
@@ -40,10 +41,10 @@
     <p>
         <a target="_blank" href="https://krausefx.com/blog/ios-privacy-instagram-and-facebook-can-track-anything-you-do-on-any-website-in-their-in-app-browser">
             About this tool
-        </a> &nbsp; | &nbsp;
+        </a> |
         <a target="_blank" href="https://krausefx.com/privacy">
             Additional privacy projects
-        </a> &nbsp; | &nbsp; <a target="_blank" href="https://twitter.com/KrauseFx">@KrauseFx</a></p>
+        </a> | <a target="_blank" href="https://twitter.com/KrauseFx">@KrauseFx</a></p>
 </footer>
 
 <script type="text/javascript">
@@ -292,7 +293,7 @@
         color: #0085bd !important;
     }
     
-    #resultsList h3 {
+    #resultsList h5 {
         margin-top: 10px;
         padding-top: 0px;
     }
@@ -303,6 +304,7 @@
         overflow-y: auto;
         max-width: cacl(100% - 10px);
         white-space: nowrap;
+        background-color:
     }
     
     ol>li {
@@ -342,7 +344,7 @@
     }
     
     .summaries {
-        padding: 20px;
+        padding: 15px;
         margin-left: -5px;
         margin-right: -5px;
     }
@@ -364,8 +366,6 @@
     #all-comments {
         padding-left: 10px;
         margin-top: -0px;
-        border: 3px solid #ccc;
-        border-top: none;
         list-style: inside;
         line-height: 1.8;
     }
@@ -379,6 +379,7 @@
         font-style: italic;
         font-size: 0.9em;
         color: #666;
+        margin-top: -10px;
     }
     
     .summary-note {
