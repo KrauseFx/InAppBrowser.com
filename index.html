@@ -96,17 +96,22 @@
     ]
 
     const potentiallyDangerous = {
-        "createElement('script')": "Injects external JavaScript code",
+        "createElement('script'": "Injects external JavaScript code",
         "http://": "Uses an unencrypted URL, making the whole page insecure",
-        "selectionchange": "Monitors text selections on websites",
+        "addEventListener('selectionchange'": "Monitors all text selections on websites",
+        "addEventListener('click'": "Monitors all taps happening on websites",
+        "addEventListener('keypress'": "Monitors all keyboard inputs on websites",
+        "createElement('a'": "Creates a new link on website"
     }
     const neutralNotes = {
         "querySelector('input[type=password]": "Accessing all password fields: This could either mean the app has a password manager, or the app reads or enters passwords on the website",
+        "createElement('style')": "Add CSS code, allows app to customize appearance of website",
     }
     const goodNotes = {
         "querySelector('head > meta[property=\"og:site_name\"]')": "Gets the website's name",
         "querySelector('head > meta[name=\"title\"]')": "Gets the website title",
         "querySelectorAll('head > link[rel~=\"icon\"]')": "Gets the website's favicon(s)",
+        "querySelector('head > title')": "Gets the website title",
         "getElementsByTagName('meta')": "Gets the page's metadata (like share text), this is unrelated to Meta the company",
     }
 
