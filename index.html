@@ -7,11 +7,9 @@
 <h1>InAppBrowser.com</h1>
 <p class="subtitle">Verify if an app's in-app browser is injecting JavaScript code</p>
 <p id="high-level-summary">
-    Some iOS and Android apps make use of a custom in-app browser (<a target="_blank" href="https://krausefx.com/blog/ios-privacy-instagram-and-facebook-can-track-anything-you-do-on-any-website-in-their-in-app-browser">full details</a>). This causes various
-    potential security and privacy risks to the user. This page is designed to help you see what the in-app browser is doing.
+    Some iOS and Android apps make use of a custom in-app browser (<a target="_blank" href="https://krausefx.com/blog/ios-privacy-instagram-and-facebook-can-track-anything-you-do-on-any-website-in-their-in-app-browser">full details</a>). This causes potential
+    security and privacy risks to the user. This page is designed to help you see what the in-app browser is doing.
 </p>
-<p>For full context, please <a target="_blank" href="https://krausefx.com/">read
-    the intro first</a>.</p>
 
 <div class="summaries" id="clean-summary">
     ✅ &nbsp;Good news, it looks like the host app doesn't inject any JavaScript code.
@@ -26,13 +24,12 @@
 </ul>
 <hr style="margin-top: 0px; margin-bottom: 15px" />
 
-<div class="summary-note">
+<div class="summary-note" id="top-summary-1">
     The summary above is a list of things detected from this in-app browser. However, it is not a comprehensive list and the raw output below should be carefully studied to understand what is happening.
 </div>
 
 <ol id="resultsList">
     <h5>Detected JavaScript Commands:</h5>
-    <p id="none">None</p>
 </ol>
 
 <div class="summary-note">
@@ -54,8 +51,17 @@
 <script type="text/javascript">
     // Fetch the nodes first, before we override the `document` methods
     const resultsList = document.getElementById("resultsList")
-    const noneElement = document.getElementById("none")
     const cleanSummary = document.getElementById("clean-summary")
+    const elementsToHideOnNonClean = [
+        cleanSummary,
+    ]
+    const elementsToShowOnNonClean = [
+        resultsList,
+        document.getElementById("top-summary-1"),
+    ]
+    for (const element of elementsToShowOnNonClean) {
+        element.style.display = "none"
+    }
     const mediumSummary = document.getElementById("medium-summary")
     const dangerousSummary = document.getElementById("dangerous-summary")
     const allComments = document.getElementById("all-comments")
@@ -91,7 +97,7 @@
     const potentiallyDangerous = {
         "createElement('script')": "Injects external JavaScript code",
         "http://": "Uses an unencrypted URL, making the whole page insecure",
-        "selectionchange": "Used to monitor text selections",
+        "selectionchange": "Monitors text selections on websites",
     }
     const neutralNotes = {
         "querySelector('input[type=password]": "Accessing all password fields: This could either mean the app has a password manager, or the app reads or enters passwords on the website"
@@ -106,7 +112,6 @@
     let lastLevel = -1;
 
     function appendEvent(str, level) {
-        noneElement.style.display = "none"
         let classesToUse = ""
         let comments = ""
 
@@ -144,8 +149,14 @@
         lastLevel = level;
 
         resultsList.innerHTML += "<li class='" + classesToUse + "'>" + str + comments + "</li>"
+        for (const element of elementsToShowOnNonClean) {
+            element.style.display = "block"
+        }
+
         if (cleanSummary.style.display !== "none") {
-            cleanSummary.style.display = "none"
+            for (const element of elementsToHideOnNonClean) {
+                element.style.display = "none"
+            }
             mediumSummary.style.display = "block"
         }
     }
@@ -271,6 +282,7 @@
     body {
         background-color: #f0f0f0;
         max-width: 600px;
+        padding-bottom: 20px;
     }
     /* On larger screens only */
     
@@ -365,7 +377,7 @@
     
     #all-comments {
         padding-left: 10px;
-        margin-top: -0px;
+        margin-top: 10px;
         list-style: inside;
         line-height: 1.8;
     }
