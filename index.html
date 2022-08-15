@@ -18,7 +18,7 @@
     🕵️‍♂️ &nbsp;Javascript injection detected. This does not necessarily imply malicious behaviour.
 </div>
 <div class="summaries" id="dangerous-summary">
-    🚨 &nbsp;JavaScript injection detected, with some potentially malicious or dangerous commands.
+    🚨 &nbsp;JavaScript injection detected, with some potentially dangerous commands.
 </div>
 <ul id="all-comments">
 </ul>
@@ -100,7 +100,7 @@
         "selectionchange": "Monitors text selections on websites",
     }
     const neutralNotes = {
-        "querySelector('input[type=password]": "Accessing all password fields: This could either mean the app has a password manager, or the app reads or enters passwords on the website"
+        "querySelector('input[type=password]": "Accessing all password fields: This could either mean the app has a password manager, or the app reads or enters passwords on the website",
     }
     const goodNotes = {
         "querySelector('head > meta[property=\"og:site_name\"]')": "Gets the website's name",
@@ -379,12 +379,27 @@
         padding-left: 10px;
         margin-top: 10px;
         list-style: inside;
-        line-height: 1.8;
+        line-height: 1.3em;
+        font-size: 0.8em;
     }
     
-    #all-comments>.in-comments {
+    #all-comments>li {
         text-align: left !important;
         padding-left: 0px;
+        font-family: 'Courier New', Courier, monospace !important;
+        font-weight: bold;
+    }
+    
+    .bad-in-comments {
+        color: rgb(175, 0, 0);
+    }
+    
+    .neutral-in-comments {
+        color: rgb(0, 0, 175);
+    }
+    
+    .good-in-comments {
+        color: rgb(0, 150, 0);
     }
     
     .subtitle {
