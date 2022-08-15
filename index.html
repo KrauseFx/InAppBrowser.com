@@ -6,7 +6,7 @@
 </head>
 <h1>inAppBrowser.com</h1>
 <p id="author">via <a target="_blank" href="https://twitter.com/KrauseFx">@KrauseFx</a></p>
-<p>Verify the app's in-app browser is not injecting any JavaScript code</p>
+<p class="subtitle">Verify if an app's in-app browser is injecting JavaScript code</p>
 <p>For full context, please <a target="_blank" href="https://krausefx.com/blog/ios-privacy-instagram-and-facebook-can-track-anything-you-do-on-any-website-in-their-in-app-browser">read
     this first</a>.</p>
 
@@ -14,16 +14,22 @@
     ✅ &nbsp;Good news, it looks like the host app doesn't inject any JavaScript code.
 </div>
 <div class="summaries" id="medium-summary">
-    🕵️‍♂️ &nbsp;JavaScript injection detected! See the list of commands above! This does not mean anything malicious is happening.
+    🕵️‍♂️ &nbsp;Javascript injection detected. This does not necessarily imply malicious behaviour.
 </div>
 <div class="summaries" id="dangerous-summary">
-    🚨 &nbsp;JavaScript injection detected! Including some potentially malicious or dangerous commands. See the highlights above!
+    🚨 &nbsp;JavaScript injection detected, with some potentially malicious or dangerous commands.
 </div>
 <ul id="all-comments">
 </ul>
 
-The above is a summary of the commands this page has detected. This page can't detect all commands, so there might be other tracking happening not shown here. Also, the above only shows the commands that we also interpret, for a full list of all commands,
-check out the list below, however it will require engineering skills to understand what is happening.
+<div id="summary-note">
+    The summary above is a list of commands detected, however is not a comprehensive list of what is happening. Below is the raw output that should be carefully studied to understand what is happening.
+
+    <br /><br />
+    <b>Disclaimer</b>: This tool works by overriding the most common JavaScript functions. The host app may still inject other commands, therefore the above list of commands is not a comprehensive list of what is happening. This tool cannot detect other
+    app tracking that may be happening, such as custom gesture recognition, screenshot detection, or tracking of web request events. It is important to fully diagnose the raw output to form an understanding of how the app is using this data.”
+
+</div>
 
 <ol id="resultsList">
     <h3>Detected JavaScript Commands:</h3>
@@ -33,14 +39,12 @@ check out the list below, however it will require engineering skills to understa
 <footer>
     <hr />
     <p>
-        <b>Important:</b> The above list of commands might not be the full list. This page works by overriding the most common JavaScript functions. The host app might still inject other commands. Also, this page can only monitor JS commands, and can't
-        detect other tracking the app might do, like adding custom gesture recognisers on top of the webview, screenshot detections, or subscribing to web request events of the web view. The list of potentially dangerous JS commands is incomple, and was
-        built based on analysing some of the most popular iOS apps. All the notes added might not be 100% accurate and are only there to help understand the typical context of a given command.
-    </p>
-    <br />
-    <p>For full details on what this website does <a target="_blank" href="https://krausefx.com/blog/ios-privacy-instagram-and-facebook-can-track-anything-you-do-on-any-website-in-their-in-app-browser">read
-      this article first</a>.</p>
-    <p>For more privacy & security projects visit <a target="_blank" href="https://krausefx.com/privacy">krausefx.com/privacy</a>.</p>
+        <a target="_blank" href="https://krausefx.com/blog/ios-privacy-instagram-and-facebook-can-track-anything-you-do-on-any-website-in-their-in-app-browser">
+            About this tool
+        </a> &nbsp; | &nbsp;
+        <a target="_blank" href="https://krausefx.com/privacy">
+            Additional privacy projects
+        </a> &nbsp; | &nbsp; <a target="_blank" href="https://twitter.com/KrauseFx">@KrauseFx</a></p>
 </footer>
 
 <script type="text/javascript">
@@ -317,8 +321,11 @@ check out the list below, however it will require engineering skills to understa
     }
     
     footer p {
-        margin-top: 0px;
+        text-align: center;
+        font-size: 0.8em;
+        margin-top: -15px;
         margin-bottom: 5px;
+        color: #bbb !important;
     }
     
     .danger {
@@ -367,5 +374,17 @@ check out the list below, however it will require engineering skills to understa
     #all-comments>.in-comments {
         text-align: left !important;
         padding-left: 0px;
+    }
+    
+    .subtitle {
+        font-style: italic;
+        font-size: 0.9em;
+        color: #666;
+    }
+    
+    #summary-note {
+        font-style: italic;
+        text-align: left;
+        font-size: 0.9em;
     }
 </style>
