@@ -18,7 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://127.0.0.1:8000/"] cachePolicy:0 timeoutInterval:0]];
+    [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://InAppBrowser.com"] cachePolicy:0 timeoutInterval:0]];
 }
 - (void)viewDidAppear:(BOOL)animated {
     [self.webView reload];
