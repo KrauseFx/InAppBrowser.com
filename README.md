@@ -1,6 +1,6 @@
-<img src="https://krausefx.com/assets/posts/hijacking.report/instagram_framed.png" width="300" align="right">
+<img src="https://krausefx.com/assets/posts/InAppBrowser.com/instagram_framed.png" width="300" align="right">
 
-# [hijacking.report](https://hijacking.report)
+# [InAppBrowser.com](https://InAppBrowser.com)
 
 ## What is this project?
 
@@ -21,12 +21,13 @@ document.getElementById = function(a, b) {
 }
 ```
 
-<h3><a href="https://krausefx.com/blog/hijacking-report">Check out the full hijacking.report announcement</a></h3>
+<h3><a href="https://krausefx.com/">Check out the full announcement</a></h3>
+<!-- TODO: update link -->
 
 ## How to use
 
-Open [hijacking.report](https://hijacking.report) through the iOS/Android app of your choice. For a social media app post the link, or for messengers send the link to yourself, and try opening the page as part of their in-app web browser.
+Open [InAppBrowser.com](https://InAppBrowser.com) through the iOS/Android app of your choice. For a social media app post the link, or for messengers send the link to yourself, and try opening the page as part of their in-app web browser.
 
 ## ad-container folder
 
-This folder contains an empty iOS app project, that renders the [`hijacking.report`](hijacking.report) website without any modification. This was used to proof that the standard Apple WKWebView doesn't do any queries without consent.
+This folder contains an empty iOS app project, that renders the [`InAppBrowser.com`](InAppBrowser.com) website without any modification. This was used to proof that the standard Apple `WKWebView` doesn't do any queries without consent.
