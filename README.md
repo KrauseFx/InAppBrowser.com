@@ -1,4 +1,4 @@
-<img src="/assets/tiktok.png" width="300" align="right">
+<img src="/assets/tiktok_framed.png" width="300" align="right">
 
 # [InAppBrowser.com](https://InAppBrowser.com)
 
