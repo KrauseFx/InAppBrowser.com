@@ -1,4 +1,4 @@
-<img src="https://krausefx.com/assets/posts/InAppBrowser.com/instagram_framed.png" width="300" align="right">
+<img src="/assets/tiktok.png" width="300" align="right">
 
 # [InAppBrowser.com](https://InAppBrowser.com)
 
