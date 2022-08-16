@@ -21,7 +21,9 @@ document.getElementById = function(a, b) {
 }
 ```
 
-<h3><a href="https://krausefx.com/">Check out the full announcement</a></h3>
+<h4><a href="/index.html">View the Source Code here</a></h4>
+
+<h4><a href="https://krausefx.com/">Check out the full announcement</a></h4>
 <!-- TODO: update link -->
 
 ## How to use
