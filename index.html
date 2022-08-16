@@ -25,7 +25,7 @@
 <hr style="margin-top: 0px; margin-bottom: 15px" />
 
 <div class="summary-note" id="top-summary-1">
-    The summary above is a list of things detected from this in-app browser. However, it is not a comprehensive list and the raw output below should be carefully studied to understand what is happening.
+    The summary above shows a list of things the in-app browser did when you opened this website. However, there might be other things happening as well. The raw output below should be carefully studied to better understand what's happening.
 </div>
 
 <ol id="resultsList">
@@ -103,12 +103,13 @@
         "addEventListener('keypress'": "Monitors all keyboard inputs on websites",
         "addEventListener('keyup'": "Monitors all keyboard inputs on websites",
         "createElement('a'": "Creates a new link on website",
+        "elementFromPoint": "Gets information about an element based on coordinates, which can be used to track which elements the user clicks on",
+        "querySelector('input[type=password]": "Accesses all password fields: This could either mean the app has a password manager, or the app reads or enters passwords on the page",
     }
     const neutralNotes = {
-        "querySelector('input[type=password]": "Accessing all password fields: This could either mean the app has a password manager, or the app reads or enters passwords on the website",
-        "createElement('style')": "Add CSS code, allows app to customize appearance of website",
+        "createElement('style')": "Adds CSS code, allows app to customize appearance of website",
         "addEventListener('focus'": "Monitors whenever you focus a text field or other element",
-        "addEventListener('blue'": "Monitors whenever you remove the focus",
+        "addEventListener('blue'": "Monitors whenever you remove the focus from an element",
     }
     const goodNotes = {
         "querySelector('head > meta[property=\"og:site_name\"]')": "Gets the website's name",
