@@ -104,6 +104,9 @@
         "createElement('a'": "Creates a new link on website",
         "elementFromPoint": "Gets information about an element based on coordinates, which can be used to track which elements the user clicks on",
         "querySelector('input[type=password]": "Accesses all password fields: This could either mean the app has a password manager, or the app reads or enters passwords on the page",
+        "addEventListener('click'": "Monitors all taps happening on websites, including all taps on all buttons & links",
+        "addEventListener('message'": "Monitors all JavaScript messages, this can be used for many things",
+        "addEventListener('focusin'": "Monitors when the user focuses on an element, like a textfield",
     }
     const neutralNotes = {
         "createElement('style')": "Adds CSS code, allows app to customize appearance of website",
@@ -240,6 +243,18 @@
         }
     }
     investigate(document, 1);
+
+    const originalAddEventListener = window.addEventListener;
+    const originalRemoveEventListener = window.removeEventListener;
+    window.addEventListener = function(...args) {
+        const str = `window.addEventListener('${args[0]}', ${args.slice(1).map((arg) => renderParam(arg)).join(", ")}`
+        appendEvent(str, 1)
+        return originalAddEventListener.apply(window, args)
+    }
+    window.removeEventListener = function() {
+        appendEvent("window.removeEventListener('" + arguments[0] + "')", 1)
+        return originalRemoveEventListener.apply(window, arguments)
+    }
 </script>
 
 <style type="text/css">
