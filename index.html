@@ -14,17 +14,25 @@
     <p>✅ This tool couldn't detect any JavaScript injections. However, this doesn't mean there were no code injections. As of iOS 14.3, Apple introduced a new way of running JavaScript code in an "Isolated World", making it impossible for a website to verify
         what code is being executed.</p>
     <p>If you opened this website in iOS Safari, or it's being rendered by SFSafariViewController, you are on the safe side when it comes to injecting JavaScript code.</p>
-    <p>Please read the Disclaimer, as well as the <a href="https://krausefx.com/blog/announcing-inappbrowsercom-see-what-javascript-commands-get-executed-in-an-in-app-browser" target="_blank">full explanation</a></p>
+    <p>Please read the Disclaimer below, as well as the <a href="https://krausefx.com/blog/announcing-inappbrowsercom-see-what-javascript-commands-get-executed-in-an-in-app-browser" target="_blank">full explanation</a></p>
 </div>
 <div class="summaries" id="medium-summary">
     <p>🕵️‍♂️ Javascript injection detected. This does not necessarily imply malicious behaviour.</p>
     However, this doesn't mean there were no other code injections. As of iOS 14.3, Apple introduced a new way of running JavaScript code in an "Isolated World", making it impossible for a website to verify what code is being executed.</p>
-    <p>Please read the Disclaimer, as well as the <a href="https://krausefx.com/blog/announcing-inappbrowsercom-see-what-javascript-commands-get-executed-in-an-in-app-browser" target="_blank">full explanation</a></p>
+    <p>Please read the Disclaimer below, as well as the <a href="https://krausefx.com/blog/announcing-inappbrowsercom-see-what-javascript-commands-get-executed-in-an-in-app-browser" target="_blank">full explanation</a></p>
 </div>
 <div class="summaries" id="dangerous-summary">
     <p>🚨 JavaScript injection detected, with some potentially dangerous commands.</p>
     <p>There might be additional JavaScript commands executed using "Isolated World" JavaScript, which can't be detected on this page.</p>
-    <p>Please read the Disclaimer, as well as the <a href="https://krausefx.com/blog/announcing-inappbrowsercom-see-what-javascript-commands-get-executed-in-an-in-app-browser" target="_blank">full explanation</a></p>
+    <p>Please read the Disclaimer below, as well as the <a href="https://krausefx.com/blog/announcing-inappbrowsercom-see-what-javascript-commands-get-executed-in-an-in-app-browser" target="_blank">full explanation</a></p>
+</div>
+<div class="summaries" id="third-party-browser">
+    <p>✅ It looks like you're opening this page on a third party iOS browser.</p>
+    <p>It doesn't really make sense show the JavaScript commands executed, as the browser needs to run JavaScript commands to offer their features, like a password manager, the print dialog, search on page, and media management</p>
+    <p>This page will still show the commands detected by this page, however some mobile browsers already leverage the "Isolated World" JavaScript, which can't be detected by this page</p>
+    <p>Please read the Disclaimer below, as well as the <a href="https://krausefx.com/blog/announcing-inappbrowsercom-see-what-javascript-commands-get-executed-in-an-in-app-browser" target="_blank">full explanation</a></p>
+    <p><b>Please note that there aren't any meaningful conclusions on the output below for browser apps.</b></p>
+    <br />
 </div>
 <ul id="all-comments">
 </ul>
@@ -60,9 +68,25 @@
     // Fetch the nodes first, before we override the `document` methods
     const resultsList = document.getElementById("resultsList")
     const cleanSummary = document.getElementById("clean-summary")
+    const mediumSummary = document.getElementById("medium-summary")
+    const dangerousSummary = document.getElementById("dangerous-summary")
+
     const elementsToHideOnNonClean = [
         cleanSummary,
     ]
+
+    // Check the user agent string if the current browser is a third party browser
+    // We should update this script to include more browsers like Brave, however I couldn't find the user agent string, currently detecting Chrome, Firefox and Edge
+    const isThirdPartyBrowser = navigator.userAgent.includes("CriOS") || navigator.userAgent.includes("EdgiOS") || navigator.userAgent.includes("FxiOS")
+    if (isThirdPartyBrowser) {
+        document.getElementById("third-party-browser").style.display = "block"
+        dangerousSummary.style.display = "none"
+        mediumSummary.style.display = "none"
+        cleanSummary.style.display = "none"
+    } else {
+        document.getElementById("third-party-browser").style.display = "none"
+    }
+
     const elementsToShowOnNonClean = [
         resultsList,
         document.getElementById("top-summary-1"),
@@ -70,8 +94,7 @@
     for (const element of elementsToShowOnNonClean) {
         element.style.display = "none"
     }
-    const mediumSummary = document.getElementById("medium-summary")
-    const dangerousSummary = document.getElementById("dangerous-summary")
+
     const allComments = document.getElementById("all-comments")
     const summary = document.getElementById("summary")
     const denyList = [
@@ -147,7 +170,9 @@
 
                 cleanSummary.style.display = "none"
                 mediumSummary.style.display = "none"
-                dangerousSummary.style.display = "block"
+                if (!isThirdPartyBrowser) {
+                    dangerousSummary.style.display = "block"
+                }
             }
         }
         // Iterate over neutralNotes, and see if any of them are included in the `str`
@@ -179,7 +204,9 @@
             for (const element of elementsToHideOnNonClean) {
                 element.style.display = "none"
             }
-            mediumSummary.style.display = "block"
+            if (!isThirdPartyBrowser) {
+                mediumSummary.style.display = "block"
+            }
         }
     }
 
@@ -395,6 +422,10 @@
         margin-right: -5px;
         padding-top: 3px;
         padding-bottom: 3px;
+    }
+    
+    #third-party-browser {
+        background-color: rgba(72, 255, 0, 0.3);
     }
     
     #clean-summary {
