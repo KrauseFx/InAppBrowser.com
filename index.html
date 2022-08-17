@@ -77,7 +77,14 @@
 
     // Check the user agent string if the current browser is a third party browser
     // We should update this script to include more browsers like Brave, however I couldn't find the user agent string, currently detecting Chrome, Firefox, Edge and the Google search app
-    const isThirdPartyBrowser = navigator.userAgent.includes("CriOS") || navigator.userAgent.includes("EdgiOS") || navigator.userAgent.includes("FxiOS") || navigator.userAgent.includes("GSA")
+    let isThirdPartyBrowser = navigator.userAgent.includes("CriOS") || navigator.userAgent.includes("EdgiOS") || navigator.userAgent.includes("FxiOS") || navigator.userAgent.includes("GSA");
+
+    // Additionally check for Android third party user agents
+    if (navigator.userAgent.includes("Android") && (navigator.userAgent.includes("Chrome") || navigator.userAgent.includes("Firefox") || navigator.userAgent.includes("EdgA"))) {
+        isThirdPartyBrowser = true
+    }
+
+
     if (isThirdPartyBrowser) {
         document.getElementById("third-party-browser").style.display = "block"
         dangerousSummary.style.display = "none"
