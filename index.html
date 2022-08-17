@@ -4,21 +4,27 @@
     <title>inAppBrowser.com</title>
 </head>
 <h1>InAppBrowser.com</h1>
-<p class="subtitle">Verify if an app's in-app browser is injecting JavaScript code</p>
+<p class="subtitle">Check if an in-app browser is injecting JavaScript code</p>
 <p id="high-level-summary">
     Some iOS and Android apps make use of a custom in-app browser (<a target="_blank" href="https://krausefx.com/blog/ios-privacy-instagram-and-facebook-can-track-anything-you-do-on-any-website-in-their-in-app-browser">full details</a>). This causes potential
-    security and privacy risks to the user. This page is designed to help you see what the in-app browser is doing.
+    security and privacy risks to the user.
 </p>
 
 <div class="summaries" id="clean-summary">
-    ✅ This tool couldn't detect any JavaScript injections. However, this doesn't mean there were no code injections. As of iOS 14.3 Apple introduced a new way of running JavaScript code in an "Isolated World", making it impossible for a website to verify
-    what code is being executed.
+    <p>✅ This tool couldn't detect any JavaScript injections. However, this doesn't mean there were no code injections. As of iOS 14.3, Apple introduced a new way of running JavaScript code in an "Isolated World", making it impossible for a website to verify
+        what code is being executed.</p>
+    <p>If you opened this website in iOS Safari, or it's being rendered by SFSafariViewController, you are on the safe side when it comes to injecting JavaScript code.</p>
+    <p>Please read the Disclaimer, as well as the <a href="https://krausefx.com/blog/announcing-inappbrowsercom-see-what-javascript-commands-get-executed-in-an-in-app-browser" target="_blank">full explanation</a></p>
 </div>
 <div class="summaries" id="medium-summary">
-    🕵️‍♂️ Javascript injection detected. This does not necessarily imply malicious behaviour.
+    <p>🕵️‍♂️ Javascript injection detected. This does not necessarily imply malicious behaviour.</p>
+    However, this doesn't mean there were no other code injections. As of iOS 14.3, Apple introduced a new way of running JavaScript code in an "Isolated World", making it impossible for a website to verify what code is being executed.</p>
+    <p>Please read the Disclaimer, as well as the <a href="https://krausefx.com/blog/announcing-inappbrowsercom-see-what-javascript-commands-get-executed-in-an-in-app-browser" target="_blank">full explanation</a></p>
 </div>
 <div class="summaries" id="dangerous-summary">
-    🚨 JavaScript injection detected, with some potentially dangerous commands.
+    <p>🚨 JavaScript injection detected, with some potentially dangerous commands.</p>
+    <p>There might be additional JavaScript commands executed using "Isolated World" JavaScript, which can't be detected on this page.</p>
+    <p>Please read the Disclaimer, as well as the <a href="https://krausefx.com/blog/announcing-inappbrowsercom-see-what-javascript-commands-get-executed-in-an-in-app-browser" target="_blank">full explanation</a></p>
 </div>
 <ul id="all-comments">
 </ul>
@@ -33,15 +39,16 @@
 </ol>
 
 <div class="summary-note">
-    <b>Disclaimer</b>: This tool works by overriding the most common JavaScript functions, however the host app may still inject other commands. As of iOS 14.3, Apple introduced <a href="https://developer.apple.com/documentation/webkit/wkcontentworld"
-        target="_blank">a new way of running JavaScript code</a> in an "Isolated World", making it impossible for a website to verify what code is being executed. Also this tool cannot detect other app tracking that may occur, such as custom gesture recognition,
-    screenshot detection, or tracking of web request events. It is important to diagnose the raw output, and have context of the product, to understand how the app is using this data.
+    <p><b>Disclaimer</b>: This tool works by overriding the most common JavaScript functions, however the host app may still inject other commands. As of iOS 14.3, Apple introduced <a href="https://developer.apple.com/documentation/webkit/wkcontentworld"
+            target="_blank">a new way of running JavaScript code</a> in an "Isolated World", making it impossible for a website to verify what code is being executed. Also this tool cannot detect other app tracking that may occur, such as custom gesture recognition,
+        screenshot detection, or tracking of web request events.</p>
+    <p><b>Important:</b> Before jumping to any conclusions, please <a href="https://krausefx.com/blog/announcing-inappbrowsercom-see-what-javascript-commands-get-executed-in-an-in-app-browser" target="_blank">read this post</a>.</p>
 </div>
 
 <footer>
     <hr />
     <p>
-        <a target="_blank" href="https://krausefx.com/blog/ios-privacy-instagram-and-facebook-can-track-anything-you-do-on-any-website-in-their-in-app-browser">
+        <a target="_blank" href="https://krausefx.com/blog/announcing-inappbrowsercom-see-what-javascript-commands-get-executed-in-an-in-app-browser">
             About this tool
         </a> |
         <a target="_blank" href="https://krausefx.com/privacy">
@@ -386,6 +393,8 @@
         padding: 15px;
         margin-left: -5px;
         margin-right: -5px;
+        padding-top: 3px;
+        padding-bottom: 3px;
     }
     
     #clean-summary {
