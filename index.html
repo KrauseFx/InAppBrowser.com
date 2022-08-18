@@ -163,8 +163,15 @@
     }
 
     let lastLevel = -1;
+    let existingEntries = [];
 
     function appendEvent(str, level) {
+        let showOnTopList = true;
+        if (existingEntries.includes(str)) {
+            showOnTopList = false;
+        }
+        existingEntries += str;
+
         let classesToUse = ""
         let comments = ""
 
@@ -173,7 +180,9 @@
             if (str.indexOf(key) > -1) {
                 classesToUse += " danger "
                 comments += `<p class='bad-comment'>^&nbsp;&nbsp;${value}</p>`
-                allComments.innerHTML += `<li class='bad-in-comments'>${value}</li>`
+                if (showOnTopList) {
+                    allComments.innerHTML += `<li class='bad-in-comments'>${value}</li>`
+                }
 
                 cleanSummary.style.display = "none"
                 mediumSummary.style.display = "none"
@@ -186,14 +195,18 @@
         for (const [key, value] of Object.entries(neutralNotes)) {
             if (str.indexOf(key) > -1) {
                 comments += `<p class='neutral-comment'>^&nbsp;&nbsp;${value}</p>`
-                allComments.innerHTML += `<li class='neutral-in-comments'>${value}</li>`
+                if (showOnTopList) {
+                    allComments.innerHTML += `<li class='neutral-in-comments'>${value}</li>`
+                }
             }
         }
         // Iterate over goodNotes, and see if any of them are included in the `str`
         for (const [key, value] of Object.entries(goodNotes)) {
             if (str.indexOf(key) > -1) {
                 comments += `<p class='good-comment'>^&nbsp;&nbsp;${value}</p>`
-                allComments.innerHTML += `<li class='good-in-comments'>${value}</li>`
+                if (showOnTopList) {
+                    allComments.innerHTML += `<li class='good-in-comments'>${value}</li>`
+                }
             }
         }
 
