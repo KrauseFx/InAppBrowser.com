@@ -297,16 +297,31 @@
     }
     investigate(document, 1);
 
-    const originalAddEventListener = window.addEventListener;
-    const originalRemoveEventListener = window.removeEventListener;
-    window.addEventListener = function(...args) {
-        const str = `window.addEventListener('${args[0]}', ${args.slice(1).map((arg) => renderParam(arg)).join(", ")}`
-        appendEvent(str, 1)
-        return originalAddEventListener.apply(window, args)
+    const originalAddEventListener = EventTarget.prototype.addEventListener;
+    const originalRemoveEventListener = EventTarget.prototype.removeEventListener;
+
+    function getTargetName (target) {
+        switch (target) {
+            case window: return "window";
+            case document: return "document";
+            default: return;
+        }
     }
-    window.removeEventListener = function() {
-        appendEvent("window.removeEventListener('" + arguments[0] + "')", 1)
-        return originalRemoveEventListener.apply(window, arguments)
+
+    EventTarget.prototype.addEventListener = function(...args) {
+        const targetName = getTargetName(this);
+        if (targetName) {
+            const str = `${targetName}.addEventListener('${args[0]}', ${args.slice(1).map((arg) => renderParam(arg)).join(", ")}`
+            appendEvent(str, 1)
+        }
+        return originalAddEventListener.apply(this, args)
+    }
+    EventTarget.prototype.removeEventListener = function() {
+        const targetName = getTargetName(this);
+        if (targetName){
+            appendEvent(`${targetName}.removeEventListener('${arguments[0]}')`, 1)
+        }
+        return originalRemoveEventListener.apply(this, arguments)
     }
 </script>
 
